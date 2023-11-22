@@ -1,0 +1,19 @@
+// 线性主题优化
+.arco-input-prepend {
+  border-right: none;
+}
+.arco-input-append {
+  border-left: none;
+}
+
+.arco-input-group {
+  > *:not(:first-child) {
+    margin-left: -1px;
+  }
+  [class$='focus'] {
+    z-index: 9;
+  }
+  > *:hover {
+    z-index: 8;
+  }
+}

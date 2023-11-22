@@ -1,0 +1,27 @@
+<svg width="25.09090909090909" height="24" viewBox="0 0 23 22" fill="none">
+  <path d="M3 4.4a4 4 0 014-4h12a4 4 0 014 4v13a4 4 0 01-4 4H7a4 4 0 01-4-4v-13z"
+    fill="url(#svg_a12b8ae111__paint0_linear_892:138010)" />
+  <mask id="svg_a12b8ae111__a" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="3" y="0" width="20" height="22">
+    <path d="M3 4.4a4 4 0 014-4h12a4 4 0 014 4v13a4 4 0 01-4 4H7a4 4 0 01-4-4v-13z" fill="#fff" />
+  </mask>
+  <g mask="url(#svg_a12b8ae111__a)">
+    <path d="M23 2.893S22 17.905 7 17.905l-11.445-.158v5.781H24.18V2.893"
+      fill="url(#svg_a12b8ae111__paint1_linear_892:138010)" />
+  </g>
+  <path
+    d="M.519 16.85c-.001-.256.211-.45.467-.45h12.468c.277 0 .505.225.533.5.117 1.163.69 3.986 3.513 4.492H5.28s-2.653.112-3.81-1.375C.642 18.95.52 17.555.52 16.85z"
+    fill="#3CA9FF" />
+  <path d="M9.7 8h6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  <defs>
+    <linearGradient id="svg_a12b8ae111__paint0_linear_892:138010" x1="3" y1=".4" x2="3" y2="21.4"
+      gradientUnits="userSpaceOnUse">
+      <stop stop-color="#186DDA" />
+      <stop offset="1" stop-color="#186DDA" />
+    </linearGradient>
+    <linearGradient id="svg_a12b8ae111__paint1_linear_892:138010" x1="12.269" y1="3.916" x2="7.12" y2="19.206"
+      gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4091F8" />
+      <stop offset="1" stop-color="#186DDA" />
+    </linearGradient>
+  </defs>
+</svg>

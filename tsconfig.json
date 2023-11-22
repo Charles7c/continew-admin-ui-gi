@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ES2020",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "allowJs": true
+  },
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "include": ["src/**/*", "src/**/*.vue", "src/types/*.d.ts", "public", "vite.config.ts"],
+  "esModuleInterop": true,
+  "references": [
+    {
+      "path": "./tsconfig.vite-config.json"
+    }
+  ]
+}
