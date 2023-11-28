@@ -1,7 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref, reactive, computed } from 'vue'
 import { resetRouter } from '@/router'
-import { login as loginApi, logout as logoutApi, getUserInfo as getUserInfoApi } from '@/apis'
+import {
+  accountLogin as accountLoginApi,
+  login as loginApi,
+  logout as logoutApi,
+  getUserInfo as getUserInfoApi,
+  getImageCaptcha as getImageCaptchaApi
+} from '@/apis'
 import type { UserInfo } from '@/apis'
 import { setToken, clearToken, getToken } from '@/utils/auth'
 import { resetHasRouteFlag } from '@/router/permission'
@@ -27,9 +33,11 @@ const storeSetup = () => {
 
   // 登录
   const login = async (params: any) => {
-    const res = await loginApi(params)
-    setToken(res.data.token)
-    token.value = res.data.token
+    const accountLoginRes = await accountLoginApi(params)
+    console.log(accountLoginRes)
+    const loginRes = await loginApi({ username: 'admin', password: 'admin123' })
+    setToken(loginRes.data.token)
+    token.value = loginRes.data.token
   }
 
   // 退出
@@ -64,7 +72,25 @@ const storeSetup = () => {
     setToken(token.value)
   }
 
-  return { userInfo, name, avatar, token, roles, permissions, login, logout, getInfo, resetToken, editToken }
+  // 获取图片验证码
+  const getImageCaptcha = () => {
+    return getImageCaptchaApi()
+  }
+
+  return {
+    userInfo,
+    name,
+    avatar,
+    token,
+    roles,
+    permissions,
+    login,
+    logout,
+    getInfo,
+    resetToken,
+    editToken,
+    getImageCaptcha
+  }
 }
 
 export const useUserStore = defineStore('user', storeSetup, {

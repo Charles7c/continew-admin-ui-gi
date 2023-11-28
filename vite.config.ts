@@ -64,10 +64,10 @@ export default defineConfig(({ command, mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: env.VITE_APP_BASE_URL, // 后台服务器地址
+          target: env.VITE_API_BASE_URL, // 后台服务器地址
           changeOrigin: true, // 是否允许不同源
           secure: false, // 支持https
-          rewrite: (path) => path.replace(/^\/api/, '/api')
+          rewrite: (path) => path.replace(/^\/api/, '/')
         }
       }
     },

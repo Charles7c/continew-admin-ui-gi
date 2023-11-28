@@ -46,6 +46,7 @@ http.interceptors.request.use(
       if (!config.headers) {
         config.headers = {}
       }
+      // config.headers.Authorization = `Bearer ${token}`
       config.headers.token = token
     }
     return config
@@ -59,7 +60,7 @@ http.interceptors.request.use(
 http.interceptors.response.use(
   (response: AxiosResponse) => {
     const { data } = response
-    const { message, success, code } = data
+    const { msg, success, code } = data
 
     // token失效
     if (code === 401) {
@@ -72,10 +73,10 @@ http.interceptors.response.use(
     if (!success) {
       NProgress.done()
       // 如果错误信息长度过长，使用 Notification 进行提示
-      if (message.length <= 15) {
-        Message.error(message || '服务器端错误')
+      if (msg.length <= 15) {
+        Message.error(msg || '服务器端错误')
       } else {
-        Notification.error(message || '服务器端错误')
+        Notification.error(msg || '服务器端错误')
       }
       return Promise.reject(new Error('Error'))
     }

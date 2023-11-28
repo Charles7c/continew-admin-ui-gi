@@ -3,7 +3,7 @@
     <a-row align="stretch" class="login-box">
       <a-col :xs="0" :sm="12" :md="15">
         <div class="login-left">
-          <img class="login-img" src="@/assets/svgs/login-img.svg" />
+          <img class="login-img" src="@/assets/svgs/login-img.svg" alt="" />
         </div>
       </a-col>
       <a-col :xs="24" :sm="12" :md="9">
@@ -17,16 +17,28 @@
             :label-col-style="{ display: 'none' }"
             :wrapper-col-style="{ flex: 1 }"
           >
-            <h3 class="login-form-title"><img class="logo" src="@/assets/images/logo.svg" /><span>ContiNew Admin</span></h3>
+            <h3 class="login-form-title">
+              <img class="logo" src="@/assets/images/logo.svg" alt="" /><span>ContiNew Admin</span>
+            </h3>
             <a-form-item field="username">
-              <a-input v-model="form.username" placeholder="账号 admin/user" allow-clear>
+              <a-input v-model="form.username" placeholder="请输入用户名" allow-clear>
                 <template #prefix><icon-user :stroke-width="1" :style="{ fontSize: '20px' }" /></template>
               </a-input>
             </a-form-item>
             <a-form-item field="password">
-              <a-input-password v-model="form.password" placeholder="密码" allow-clear>
+              <a-input-password v-model="form.password" placeholder="请输入密码" allow-clear>
                 <template #prefix><icon-lock :stroke-width="1" :style="{ fontSize: '20px' }" /></template>
               </a-input-password>
+            </a-form-item>
+            <a-form-item field="captcha" hide-label>
+              <a-input
+                v-model="form.captcha"
+                placeholder="请输入验证码"
+                :max-length="4"
+                allow-clear
+                style="flex: 1 1"
+              />
+              <img :src="captchaImgBase64" alt="验证码" class="captcha" @click="getCaptcha" />
             </a-form-item>
             <a-form-item>
               <a-row justify="space-between" align="center" class="w-full">
@@ -36,7 +48,9 @@
             </a-form-item>
             <a-form-item>
               <a-space direction="vertical" fill class="w-full">
-                <a-button type="primary" size="large" long :loading="loading" @click="login">登录</a-button>
+                <a-button type="primary" size="large" html-type="submit" long :loading="loading" @click="login"
+                  >登录</a-button
+                >
                 <a-button type="text" size="large" long class="register-btn">注册账号</a-button>
               </a-space>
             </a-form-item>
@@ -56,24 +70,25 @@ import { useUserStore } from '@/stores'
 import { useLoading } from '@/hooks'
 import { Message, type FormInstance } from '@arco-design/web-vue'
 import LoginBg from './components/LoginBg/index.vue'
-import * as Regexp from '@/utils/regexp'
 import { isMobile } from '@/utils'
+import { encryptByRsa } from '@/utils/encrypt'
 
 defineOptions({ name: 'Login' })
+const captchaImgBase64 = ref()
 const router = useRouter()
 const userStore = useUserStore()
 
 const form = reactive({
   username: 'admin',
-  password: '123456'
+  password: 'admin123',
+  captcha: '',
+  uuid: ''
 })
 
 const rules: FormInstance['rules'] = {
   username: [{ required: true, message: '请输入账号' }],
-  password: [
-    { required: true, message: '请输入密码' },
-    { match: Regexp.Password, message: '输入密码格式不正确' }
-  ]
+  password: [{ required: true, message: '请输入密码' }],
+  captcha: [{ required: true, message: '请输入验证码' }]
 }
 
 // 记住密码
@@ -83,13 +98,29 @@ const { loading, setLoading } = useLoading()
 const errorMessage = ref('')
 
 const FormRef = ref<FormInstance>()
+
+// 获取验证码
+const getCaptcha = () => {
+  userStore.getImageCaptcha().then((res) => {
+    console.log(res.data.uuid)
+    form.uuid = res.data.uuid
+    captchaImgBase64.value = res.data.img
+  })
+}
+getCaptcha()
+
 // 点击登录
 const login = async () => {
   try {
     const flag = await FormRef.value?.validate()
     if (flag) return
     setLoading(true)
-    await userStore.login(form)
+    await userStore.login({
+      username: form.username,
+      password: encryptByRsa(form.password) || '',
+      captcha: form.captcha,
+      uuid: form.uuid
+    })
     const { redirect, ...othersQuery } = router.currentRoute.value.query
     router.push({
       path: (redirect as string) || '/',
@@ -99,6 +130,8 @@ const login = async () => {
     })
     Message.success('登录成功')
   } catch (error) {
+    getCaptcha()
+    form.captcha = ''
     errorMessage.value = (error as Error).message
   } finally {
     setLoading(false)
@@ -183,5 +216,12 @@ const login = async () => {
   align-items: center;
   padding-top: 30px;
   box-sizing: border-box;
+}
+
+.captcha {
+  width: 111px;
+  height: 36px;
+  margin: 0 0 0 5px;
+  cursor: pointer;
 }
 </style>

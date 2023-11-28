@@ -14,12 +14,12 @@ export default [
       if (!password) {
         return resultError(null, '密码不能为空', 50000)
       }
-      if (username === 'admin' && password === '123456') {
+      if (username === 'admin' && password === 'admin123') {
         return resultSuccess({
           token: 'TOKEN-admin'
         })
       }
-      if (username === 'user' && password === '123456') {
+      if (username === 'user' && password === 'admin123') {
         return resultSuccess({
           token: 'TOKEN-user'
         })

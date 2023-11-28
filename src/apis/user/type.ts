@@ -5,7 +5,3 @@ export interface UserInfo {
   roles: string[]
   permissions: string[]
 }
-
-export interface LoginRes {
-  token: string
-}
