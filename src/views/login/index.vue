@@ -1,16 +1,16 @@
 <template>
   <div class="login">
     <a-row align="stretch" class="login-box">
-      <a-col :xs="0" :sm="12" :md="15">
+      <a-col :xs="0" :sm="12" :md="13">
         <div class="login-left">
           <img class="login-img" src="@/assets/svgs/login-img.svg" alt="" />
         </div>
       </a-col>
-      <a-col :xs="24" :sm="12" :md="9">
+      <a-col :xs="24" :sm="12" :md="11">
         <div class="login-right">
           <a-form
             ref="FormRef"
-            :size="isMobile() ? 'large' : 'medium'"
+            size="large"
             :model="form"
             :rules="rules"
             :style="{ width: '84%' }"
@@ -22,12 +22,12 @@
             </h3>
             <a-form-item field="username">
               <a-input v-model="form.username" placeholder="请输入用户名" allow-clear>
-                <template #prefix><icon-user :stroke-width="1" :style="{ fontSize: '20px' }" /></template>
+                <template #prefix><icon-user :stroke-width="1" :style="{ fontSize: '16px' }" /></template>
               </a-input>
             </a-form-item>
             <a-form-item field="password">
               <a-input-password v-model="form.password" placeholder="请输入密码" allow-clear>
-                <template #prefix><icon-lock :stroke-width="1" :style="{ fontSize: '20px' }" /></template>
+                <template #prefix><icon-lock :stroke-width="1" :style="{ fontSize: '16px' }" /></template>
               </a-input-password>
             </a-form-item>
             <a-form-item field="captcha" hide-label>
@@ -37,13 +37,14 @@
                 :max-length="4"
                 allow-clear
                 style="flex: 1 1"
-              />
+              >
+                <template #prefix><icon-check-circle :stroke-width="1" :style="{ fontSize: '16px' }" /></template>
+              </a-input>
               <img :src="captchaImgBase64" alt="验证码" class="captcha" @click="getCaptcha" />
             </a-form-item>
             <a-form-item>
               <a-row justify="space-between" align="center" class="w-full">
                 <a-checkbox v-model="checked">记住密码</a-checkbox>
-                <a-link>忘记密码</a-link>
               </a-row>
             </a-form-item>
             <a-form-item>
@@ -51,7 +52,6 @@
                 <a-button type="primary" size="large" html-type="submit" long :loading="loading" @click="login"
                   >登录</a-button
                 >
-                <a-button type="text" size="large" long class="register-btn">注册账号</a-button>
               </a-space>
             </a-form-item>
           </a-form>
@@ -70,7 +70,6 @@ import { useUserStore } from '@/stores'
 import { useLoading } from '@/hooks'
 import { Message, type FormInstance } from '@arco-design/web-vue'
 import LoginBg from './components/LoginBg/index.vue'
-import { isMobile } from '@/utils'
 import { encryptByRsa } from '@/utils/encrypt'
 
 defineOptions({ name: 'Login' })
@@ -177,8 +176,8 @@ const login = async () => {
   background-color: var(--color-bg-5);
   &-box {
     width: 86%;
-    max-width: 720px;
-    height: 380px;
+    max-width: 820px;
+    height: 480px;
     display: flex;
     z-index: 999;
     box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.08);
