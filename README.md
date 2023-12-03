@@ -1,25 +1,25 @@
 # ContiNew UI - Gi Admin Pro
 
-<a href="https://github.com/Charles7c/continew-admin-ui-giadminpro-ui-giadminpro/blob/dev/LICENSE" target="_blank">
+<a href="https://github.com/Charles7c/continew-admin-ui-gi/blob/dev/LICENSE" target="_blank">
 <img src="https://img.shields.io/badge/License-Apache--2.0-blue.svg" alt="License" />
 </a>
-<a href="https://github.com/Charles7c/continew-admin-ui-giadminpro-ui-giadminpro" target="_blank">
+<a href="https://github.com/Charles7c/continew-admin-ui-gi" target="_blank">
 <img src="https://img.shields.io/badge/SNAPSHOT-v1.0.0-%23ff3f59.svg" alt="Release" />
 </a>
+<a href="https://github.com/Charles7c/continew-admin-ui-gi" target="_blank">
+<img src="https://img.shields.io/github/stars/Charles7c/continew-admin-ui-gi?style=social" alt="GitHub stars" />
+</a>
+<a href="https://github.com/Charles7c/continew-admin-ui-gi" target="_blank">
+<img src="https://img.shields.io/github/forks/Charles7c/continew-admin-ui-gi?style=social" alt="GitHub forks" />
+</a>
+<a href="https://gitee.com/Charles7c/continew-admin-ui-gi" target="_blank">
+<img src="https://gitee.com/Charles7c/continew-admin-ui-gi/badge/star.svg?theme=white" alt="Gitee stars" />
+</a>
+<a href="https://gitee.com/Charles7c/continew-admin-ui-gi" target="_blank">
+<img src="https://gitee.com/Charles7c/continew-admin-ui-gi/badge/fork.svg?theme=white" alt="Gitee forks" />
+</a>
 <a href="https://github.com/Charles7c/continew-admin" target="_blank">
-<img src="https://img.shields.io/badge/ContiNewAdmin-v2.1.0-%236CB52D.svg" alt="Release" />
-</a>
-<a href="https://github.com/Charles7c/continew-admin-ui-giadminpro" target="_blank">
-<img src="https://img.shields.io/github/stars/Charles7c/continew-admin-ui-giadminpro?style=social" alt="GitHub stars" />
-</a>
-<a href="https://github.com/Charles7c/continew-admin-ui-giadminpro" target="_blank">
-<img src="https://img.shields.io/github/forks/Charles7c/continew-admin-ui-giadminpro?style=social" alt="GitHub forks" />
-</a>
-<a href="https://gitee.com/Charles7c/continew-admin-ui-giadminpro" target="_blank">
-<img src="https://gitee.com/Charles7c/continew-admin-ui-giadminpro/badge/star.svg?theme=white" alt="Gitee stars" />
-</a>
-<a href="https://gitee.com/Charles7c/continew-admin-ui-giadminpro" target="_blank">
-<img src="https://gitee.com/Charles7c/continew-admin-ui-giadminpro/badge/fork.svg?theme=white" alt="Gitee forks" />
+<img src="https://img.shields.io/badge/ContiNew Admin-v2.1.0-%236CB52D.svg" alt="Release" />
 </a>
 
 ✨ [ContiNew Admin 脚手架](https://cnadmin.charles7c.top/)
@@ -30,10 +30,10 @@
 
 ## 项目源码
 
-| 开源平台      | 源码地址                                                  |
-| ------------- | --------------------------------------------------------- |
-| GitHub        | https://github.com/Charles7c/continew-admin-ui-giadminpro |
-| Gitee（码云） | https://gitee.com/Charles7c/continew-admin-ui-giadminpro  |
+| 开源平台      | 前端源码地址                                      | 后端源码地址                                |
+| ------------- | ------------------------------------------------- | ------------------------------------------- |
+| GitHub        | https://github.com/Charles7c/continew-admin-ui-gi | https://github.com/Charles7c/continew-admin |
+| Gitee（码云） | https://gitee.com/Charles7c/continew-admin-ui-gi  | https://gitee.com/Charles7c/continew-admin  |
 
 ## 反馈交流
 
@@ -51,7 +51,7 @@
 </div>
 <details>
 <summary>无加群意愿</summary>
-💬 如无加群意愿，欢迎在 <a href="https://github.com/Charles7c/continew-admin-ui-giadminpro/issues" target="_blank">Issues</a> 中进行交流探讨~ 🍻
+💬 如无加群意愿，欢迎在 <a href="https://github.com/Charles7c/continew-admin-ui-gi/issues" target="_blank">Issues</a> 中反馈交流~ 🍻
 </details>
 
 ## 鸣谢

@@ -118,7 +118,7 @@ const logout = () => {
 
 // 跳转项目地址
 const toGitPath = () => {
-  window.open('https://gitee.com/Charles7c/continew-admin-ui-giadminpro')
+  window.open('https://gitee.com/Charles7c/continew-admin-ui-gi')
 }
 </script>
 

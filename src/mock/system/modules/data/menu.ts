@@ -1044,8 +1044,8 @@ export const menus: MockMenuItem[] = [
   {
     id: '12',
     parentId: '',
-    path: 'https://gitee.com/Charles7c/continew-admin-ui-giadminpro',
-    component: 'https://gitee.com/Charles7c/continew-admin-ui-giadminpro',
+    path: 'https://gitee.com/Charles7c/continew-admin-ui-gi',
+    component: 'https://gitee.com/Charles7c/continew-admin-ui-gi',
     redirect: '',
     type: 2,
     title: '项目地址',

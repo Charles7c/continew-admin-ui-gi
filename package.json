@@ -1,5 +1,5 @@
 {
-  "name": "continew-admin-ui-giadminpro",
+  "name": "continew-admin-ui-gi",
   "version": "1.0.0-SNAPSHOT",
   "scripts": {
     "dev": "vite --host",
