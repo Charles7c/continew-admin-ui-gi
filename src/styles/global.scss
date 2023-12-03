@@ -179,3 +179,17 @@
   box-sizing: border-box;
   overflow-y: auto;
 }
+
+.gi_card_title {
+  .arco-card-header-title::before {
+    content: '';
+    width: 4px;
+    height: 50%;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgb(var(--warning-5));
+    border-radius: 0 4px 4px 0;
+  }
+}

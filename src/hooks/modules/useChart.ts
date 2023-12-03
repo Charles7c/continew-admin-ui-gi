@@ -13,18 +13,14 @@ interface optionsFn {
 
 export default function useChartOption(sourceOption: optionsFn) {
   const appStore = useAppStore()
-  const isDark = computed(() => {
-    return appStore.theme === 'dark'
-  })
+  const isDark = computed(() => appStore.theme === 'dark')
 
   // echarts support https://echarts.apache.org/zh/theme-builder.html
   // 这里不使用
   // TODO 图表主题
-  const chartOption = computed<EChartsOption>(() => {
+  const option = computed<EChartsOption>(() => {
     return sourceOption(isDark.value)
   })
 
-  return {
-    chartOption
-  }
+  return { option }
 }

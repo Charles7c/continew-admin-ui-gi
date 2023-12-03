@@ -10,27 +10,17 @@
       :key="onlyOneChild?.path"
     >
       <template #icon>
-        <GiSvgIcon
-          v-if="onlyOneChild?.meta?.svgIcon || item?.meta?.svgIcon"
-          :name="onlyOneChild?.meta?.svgIcon || item?.meta?.svgIcon"
-          :size="24"
-        ></GiSvgIcon>
-        <template v-else>
-          <component
-            v-if="onlyOneChild?.meta?.icon || item?.meta?.icon"
-            :is="onlyOneChild?.meta?.icon || item?.meta?.icon || ''"
-          ></component>
-        </template>
+        <MenuIcon
+          :svg-icon="onlyOneChild?.meta?.svgIcon || item?.meta?.svgIcon"
+          :icon="onlyOneChild?.meta?.icon || item?.meta?.icon"
+        ></MenuIcon>
       </template>
       <span>{{ onlyOneChild?.meta?.title }}</span>
     </a-menu-item>
 
     <a-sub-menu v-else v-bind="attrs" :key="item.path" :title="item?.meta?.title">
       <template #icon>
-        <GiSvgIcon v-if="item?.meta?.svgIcon" :name="item?.meta?.svgIcon" :size="24"></GiSvgIcon>
-        <template v-else>
-          <component v-if="item?.meta?.icon" :is="item?.meta?.icon || ''"></component>
-        </template>
+        <MenuIcon :svg-icon="item?.meta?.svgIcon" :icon="item?.meta?.icon"></MenuIcon>
       </template>
       <MenuItem v-for="child in item.children" :key="child.path" :item="child"></MenuItem>
     </a-sub-menu>
@@ -39,6 +29,7 @@
 
 <script lang="ts" setup>
 import type { RouteRecordRaw } from 'vue-router'
+import MenuIcon from './MenuIcon.vue'
 
 defineOptions({ name: 'MenuItem' })
 const attrs = useAttrs()

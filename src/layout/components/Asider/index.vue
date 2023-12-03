@@ -14,7 +14,7 @@
         :drawer-style="{ 'border-right': '1px solid var(--color-border-2)', 'box-sizing': 'border-box' }"
       >
         <Logo :collapsed="false"></Logo>
-        <Menu class="menu w-full"></Menu>
+        <Menu :not-collapsed="true" class="menu w-full"></Menu>
       </a-drawer>
     </template>
 

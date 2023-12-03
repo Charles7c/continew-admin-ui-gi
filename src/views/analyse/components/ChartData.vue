@@ -1,15 +1,24 @@
 <template>
-  <div class="data-chart">
-    <a-card title="数据图表" :bordered="false">
-      <GiChart height="289px" :option="chartOption"></GiChart>
-    </a-card>
-  </div>
+  <a-card title="数据图表" :bordered="false" class="gi_card_title">
+    <template #extra>
+      <a-radio-group type="button" size="small" default-value="1">
+        <a-radio value="1">访问量</a-radio>
+        <a-radio value="2">销售额</a-radio>
+        <a-radio value="3">订单量</a-radio>
+      </a-radio-group>
+    </template>
+    <VCharts :option="option" autoresize :style="{ height: '300px' }"></VCharts>
+  </a-card>
 </template>
 
 <script lang="ts" setup>
+import VCharts from 'vue-echarts'
 import { graphic } from 'echarts'
-import { useLoading, useChart } from '@/hooks'
+import { useChart } from '@/hooks'
 // import { ToolTipFormatterParams } from '@/types/echarts';
+
+const xData = ref<string[]>([])
+const yData = ref<number[]>([])
 
 function graphicFactory(side: AnyObject) {
   return {
@@ -24,11 +33,8 @@ function graphicFactory(side: AnyObject) {
     }
   }
 }
-const { setLoading } = useLoading(true)
-const xAxis = ref<string[]>([])
-const chartsData = ref<number[]>([])
 const graphicElements = ref([graphicFactory({ left: '2.6%' }), graphicFactory({ right: 0 })])
-const { chartOption } = useChart(() => {
+const { option } = useChart(() => {
   return {
     grid: {
       left: '40',
@@ -39,13 +45,13 @@ const { chartOption } = useChart(() => {
     xAxis: {
       type: 'category',
       offset: 2,
-      data: xAxis.value,
+      data: xData.value,
       boundaryGap: false,
       axisLabel: {
         color: '#4E5969',
         formatter(value: number, idx: number) {
           if (idx === 0) return ''
-          if (idx === xAxis.value.length - 1) return ''
+          if (idx === xData.value.length - 1) return ''
           return `${value}`
         }
       },
@@ -59,7 +65,7 @@ const { chartOption } = useChart(() => {
         show: true,
         interval: (idx: number) => {
           if (idx === 0) return false
-          if (idx === xAxis.value.length - 1) return false
+          if (idx === xData.value.length - 1) return false
           return true
         },
         lineStyle: {
@@ -111,7 +117,7 @@ const { chartOption } = useChart(() => {
     },
     series: [
       {
-        data: chartsData.value,
+        data: yData.value,
         type: 'line',
         smooth: true,
         // symbol: 'circle',
@@ -157,22 +163,18 @@ const { chartOption } = useChart(() => {
     ]
   }
 })
-const fetchData = () => {
-  setLoading(true)
+const getChartData = () => {
   try {
-    const data = [
-      { y: 100, x: '2022-01' },
-      { y: 200, x: '2022-02' },
-      { y: 150, x: '2022-03' },
-      { y: 30, x: '2022-04' },
-      { y: 100, x: '2022-05' },
-      { y: 50, x: '2022-06' },
-      { y: 10, x: '2022-07' },
-      { y: 80, x: '2022-08' }
-    ]
+    const values = [100, 200, 150, 30, 100, 50, 10, 80]
+    const year = new Date().getFullYear()
+    const data = values.map((i, n) => {
+      const m = n + 1
+      const month = m >= 10 ? m : `0${m}`
+      return { y: i, x: `${year}-${month}` }
+    })
     data.forEach((item: any, index: number) => {
-      xAxis.value.push(item.x)
-      chartsData.value.push(item.y)
+      xData.value.push(item.x)
+      yData.value.push(item.y)
       if (index === 0) {
         graphicElements.value[0].style.text = item.x
       }
@@ -182,15 +184,7 @@ const fetchData = () => {
     })
   } catch (err) {
     // you can report use errorHandler or other
-  } finally {
-    setLoading(false)
   }
 }
-fetchData()
+getChartData()
 </script>
-
-<style lang="scss" scoped>
-.data-chart {
-  box-sizing: border-box;
-}
-</style>

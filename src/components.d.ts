@@ -8,7 +8,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Breadcrumb: typeof import('./components/Breadcrumb/index.vue')['default']
-    GiChart: typeof import('./components/GiChart/index.vue')['default']
     GiCodeView: typeof import('./components/GiCodeView/index.vue')['default']
     GiDot: typeof import('./components/GiDot/index.tsx')['default']
     GiFlexibleBox: typeof import('./components/GiFlexibleBox/index.vue')['default']
