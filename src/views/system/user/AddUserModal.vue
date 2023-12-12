@@ -113,13 +113,13 @@ getRoleDict()
 const roleOptions = computed(() => roleDict.value.map((i) => ({ label: i.label, value: i.value })))
 
 const formRef = ref<FormInstance>()
-const userId = ref('')
+const userId = ref(0)
 const isEdit = computed(() => !!userId.value)
 const title = computed(() => (isEdit.value ? '编辑用户' : '新增用户'))
 const visible = ref(false)
 
 const { form, resetForm } = useForm({
-  id: undefined,
+  id: 0,
   disabled: false,
   status: 1 as Status,
   gender: 1 as Gender
@@ -148,7 +148,6 @@ getDeptList()
  * 打开新增弹窗
  */
 const add = () => {
-  userId.value = ''
   visible.value = true
   resetForm()
 }
@@ -157,7 +156,7 @@ const add = () => {
  * 打开编辑弹窗
  * @param id
  */
-const edit = async (id: string) => {
+const edit = async (id: number) => {
   visible.value = true
   userId.value = id
   const res = await getSystemUserDetail({ id })

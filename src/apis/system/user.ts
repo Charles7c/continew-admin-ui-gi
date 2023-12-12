@@ -4,7 +4,7 @@ import { prefix } from '../config'
 const BASE_URL = '/system/user'
 
 export interface UserItem {
-  id?: number
+  id: number
   username?: string
   nickname?: string
   gender?: number
@@ -40,7 +40,7 @@ export function getSystemUserList(params: UserListParam) {
 }
 
 /** @desc 获取用户详情 */
-export function getSystemUserDetail(params: { id: string }) {
+export function getSystemUserDetail(params: { id: number }) {
   return http.get<UserItem>(`api${BASE_URL}/${params.id}`, params)
 }
 
@@ -54,6 +54,6 @@ export function updateSystemUser(data: any) {
 }
 
 /** @desc 删除用户 */
-export function deleteSystemUser(data: { ids: string[] }) {
+export function deleteSystemUser(data: { ids: number[] }) {
   return http.del(`api${BASE_URL}/${data.ids}`)
 }

@@ -27,17 +27,17 @@
 </template>
 
 <script lang="ts" setup>
-import { getSystemUserDetail, type UserDetailResult } from '@/apis'
+import { getSystemUserDetail, type UserItem } from '@/apis'
 
 const visible = ref(false)
-const userId = ref('')
-const user = ref<UserDetailResult | null>()
+const userId = ref(0)
+const user = ref<UserItem | null>()
 const getUserDetail = async () => {
   const res = await getSystemUserDetail({ id: userId.value })
   user.value = res.data
 }
 
-const open = async (id: string) => {
+const open = async (id: number) => {
   userId.value = id
   await getUserDetail()
   visible.value = true

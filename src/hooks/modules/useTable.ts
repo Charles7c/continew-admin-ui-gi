@@ -7,13 +7,15 @@ interface Options<T> {
   onSuccess?: () => void
   immediate?: boolean
   rowKey?: keyof T
+  disabledKey?: keyof T
+  isFilterDisabled?: boolean
 }
 
 type PaginationParams = { page: number; size: number }
 type Api<T> = (params: PaginationParams) => Promise<ApiRes<PageRes<T[]>>>
 
 export default function <T>(api: Api<T>, options?: Options<T>) {
-  const { formatResult, onSuccess, immediate, rowKey } = options || {}
+  const { formatResult, onSuccess, immediate, rowKey, disabledKey } = options || {}
   const { pagination, setTotal } = usePagination(() => getTableData())
   const loading = ref(false)
   const tableData = ref<T[]>([])
@@ -49,7 +51,22 @@ export default function <T>(api: Api<T>, options?: Options<T>) {
   // 全选
   const selectAll: TableInstance['onSelectAll'] = (checked) => {
     const key = rowKey ?? ('id' as keyof T)
-    selectedKeys.value = checked ? tableData.value.map((i) => i[key] as string | number) : []
+    const getKeys = (data: any[]) => data.map((item) => item[key] as string | number)
+    if (checked) {
+      if (options?.isFilterDisabled) {
+        const disabled = disabledKey ?? ('disabled' as keyof T)
+        const filterDisabled = (data: any[]) => data.filter((item) => !item[disabled] ?? (true as boolean))
+        selectedKeys.value = getKeys(filterDisabled(tableData.value))
+      } else {
+        selectedKeys.value = getKeys(tableData.value)
+      }
+    } else {
+      selectedKeys.value = []
+    }
+  }
+  // 选择的数据发生改变
+  const selectionChange: TableInstance['onSelectionChange'] = (rowKeys) => {
+    selectedKeys.value = rowKeys
   }
 
   // 删除
@@ -83,5 +100,16 @@ export default function <T>(api: Api<T>, options?: Options<T>) {
     })
   }
 
-  return { loading, tableData, getTableData, search, pagination, selectedKeys, select, selectAll, handleDelete }
+  return {
+    loading,
+    tableData,
+    getTableData,
+    search,
+    pagination,
+    selectedKeys,
+    select,
+    selectAll,
+    selectionChange,
+    handleDelete
+  }
 }

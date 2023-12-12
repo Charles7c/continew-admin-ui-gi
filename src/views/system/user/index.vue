@@ -23,7 +23,7 @@
           </a-tree>
         </a-col>
 
-        <a-col :xs="24" :md="18" :lg="18" :xl="18" :xxl="20">
+        <a-col :xs="24" :md="18" :lg="18" :xl="19" :xxl="20">
           <a-row justify="space-between">
             <a-space wrap>
               <a-button type="primary" @click="onAdd">
@@ -65,7 +65,7 @@
             :bordered="{ cell: true }"
             :scroll="{ x: '100%', y: '100%', minWidth: 1700 }"
             :pagination="pagination"
-            :row-selection="{ type: 'checkbox', showCheckedAll: true }"
+            :row-selection="{ type: 'checkbox', showCheckedAll: true, onlyCurrent: false }"
             :selected-keys="selectedKeys"
             @select="select"
             @select-all="selectAll"
@@ -177,8 +177,9 @@ const {
   select,
   selectAll,
   handleDelete
-} = useTable((pagin) => getSystemUserList({ ...form, page: pagin.page, size: pagin.size }), {
-  immediate: true
+} = useTable((paging) => getSystemUserList({ ...form, page: paging.page, size: paging.size }), {
+  immediate: true,
+  isFilterDisabled: true
 })
 
 const reset = () => {
@@ -198,7 +199,7 @@ const onMulDelete = () => {
   if (!selectedKeys.value.length) {
     return Message.warning('请选择用户！')
   }
-  handleDelete(() => deleteSystemUser({ ids: selectedKeys.value as string[] }))
+  handleDelete(() => deleteSystemUser({ ids: selectedKeys.value as number[] }))
 }
 
 // 根据选中部门查询
