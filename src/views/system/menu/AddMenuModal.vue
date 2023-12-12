@@ -102,10 +102,10 @@
           </a-form-item>
         </a-col>
         <a-col :xs="12" :sm="12" :md="8" :lg="8" :xl="8" :xxl="8">
-          <a-form-item label="是否隐藏" field="hidden">
+          <a-form-item label="是否隐藏" field="isHidden">
             <a-switch
               type="round"
-              v-model="form.hidden"
+              v-model="form.isHidden"
               :checked-value="true"
               :unchecked-value="false"
               checked-text="是"
@@ -114,10 +114,10 @@
           </a-form-item>
         </a-col>
         <a-col :xs="12" :sm="12" :md="8" :lg="8" :xl="8" :xxl="8">
-          <a-form-item label="是否缓存" field="keepAlive">
+          <a-form-item label="是否缓存" field="isCache">
             <a-switch
               type="round"
-              v-model="form.keepAlive"
+              v-model="form.isCache"
               :checked-value="true"
               :unchecked-value="false"
               checked-text="是"
@@ -213,11 +213,11 @@ const form: MenuForm = reactive({
   svgIcon: '', // 自定义图标名称
   title: '', // 菜单或目录的名称
   sort: 0, // 排序
-  status: 1, // 状态 0禁用 1启用
+  status: 1, // 状态 1：启用；2：禁用
   path: '', // 路由路径
   component: '', // 组件路径
-  keepAlive: false, // 是否缓存
-  hidden: true, // 设置 true 的时候该路由不会在侧边栏出现
+  isCache: false, // 是否缓存
+  isHidden: true, // 设置 true 的时候该路由不会在侧边栏出现
   parentId: '',
   redirect: '', // 重定向
   breadcrumb: true, // 显示在面包屑

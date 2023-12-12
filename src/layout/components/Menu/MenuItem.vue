@@ -1,5 +1,5 @@
 <template>
-  <template v-if="!item.meta?.hidden">
+  <template v-if="!item.meta?.isHidden">
     <a-menu-item
       v-if="
         isOneShowingChild &&
@@ -41,16 +41,16 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {})
 
 // 如果hidden: false那么代表这个路由项显示在左侧菜单栏中
-// 如果props.item的子项chidren只有一个hidden: false的子元素, 那么onlyOneChild就表示这个子元素
+// 如果props.item的子项chidren只有一个isHidden: false的子元素, 那么onlyOneChild就表示这个子元素
 const onlyOneChild = ref<RouteRecordRaw | null>(null)
 const isOneShowingChild = ref(false)
 
 const handleFunction = () => {
   const chidrens = props.item?.children?.length ? props.item.children : []
   // 判断是否只有一个显示的子项
-  const showingChildrens = chidrens.filter((i) => i.meta?.hidden === false)
+  const showingChildrens = chidrens.filter((i) => i.meta?.isHidden === false)
   if (showingChildrens.length) {
-    // 保存子项最后一个hidden: false的元素
+    // 保存子项最后一个isHidden: false的元素
     onlyOneChild.value = showingChildrens[showingChildrens.length - 1]
   }
 

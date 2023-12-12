@@ -8,7 +8,7 @@
     @before-ok="save"
     @close="close"
   >
-    <a-form ref="FormRef" :model="form" :rules="rules" size="medium" auto-label-width>
+    <a-form ref="formRef" :model="form" :rules="rules" size="medium" auto-label-width>
       <a-row>
         <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" :xxl="12">
           <a-form-item label="用户名" field="username">
@@ -53,6 +53,7 @@
           v-model="form.deptId"
           :data="deptList"
           :fieldNames="{
+            disabled: 'false',
             key: 'id',
             title: 'name'
           }"
@@ -101,35 +102,30 @@
 <script setup lang="ts">
 import { useDept, useRole } from '@/hooks/app'
 import * as Regexp from '@/utils/regexp'
-import { getSystemUserDetail, saveSystemUser } from '@/apis'
+import { getSystemUserDetail, saveSystemUser, updateSystemUser } from '@/apis'
+import type { UserItem } from '@/apis'
 import { Message, type FormInstance } from '@arco-design/web-vue'
+import { mapValues } from 'lodash'
+import { useForm } from '@/hooks'
 
-const { roleList, getRoleList } = useRole()
-getRoleList()
-const roleOptions = computed(() => roleList.value.map((i) => ({ label: i.name, value: i.code })))
+const { getRoleDict, roleDict } = useRole()
+getRoleDict()
+const roleOptions = computed(() => roleDict.value.map((i) => ({ label: i.label, value: i.value })))
 
-const FormRef = ref<FormInstance>()
+const formRef = ref<FormInstance>()
 const userId = ref('')
 const isEdit = computed(() => !!userId.value)
 const title = computed(() => (isEdit.value ? '编辑用户' : '新增用户'))
 const visible = ref(false)
 
-const form = reactive({
-  id: '',
-  username: '', // 用户名
-  nickname: '', // 昵称
-  gender: 1 as Gender, // 性别 1男 2女
-  phone: '', // 手机号
-  email: '', // 邮箱
-  deptId: '', // 部门
-  roleIds: [], // 角色(可能多个)
-  description: '', // 描述
-  status: 1 as Status, // 状态 0禁用 1启用(正常)
-  type: 2, // 类型 1系统内置(admin是系统内置) 2自定义
-  disabled: false // 如果 type===1 这为 true, 主要作用是列表复选框禁用状态
-})
+const { form, resetForm } = useForm({
+  id: undefined,
+  disabled: false,
+  status: 1 as Status,
+  gender: 1 as Gender
+} as UserItem)
 
-const rules = {
+const rules: FormInstance['rules'] = {
   username: [
     { required: true, message: '请输入用户名' },
     { min: 2, max: 4, message: '长度在 2 - 4个字符' }
@@ -148,31 +144,55 @@ const rules = {
 const { deptList, getDeptList } = useDept()
 getDeptList()
 
+/**
+ * 打开新增弹窗
+ */
 const add = () => {
   userId.value = ''
   visible.value = true
+  resetForm()
 }
 
+/**
+ * 打开编辑弹窗
+ * @param id
+ */
 const edit = async (id: string) => {
   visible.value = true
   userId.value = id
   const res = await getSystemUserDetail({ id })
-  Object.assign(form, res.data)
+  Object.assign(
+    form,
+    mapValues(res.data, (f) => (f === null ? undefined : f))
+  )
 }
 
+/**
+ * 关闭弹窗
+ */
 const close = () => {
-  FormRef.value?.resetFields()
+  formRef.value?.resetFields()
 }
 
-defineExpose({ add, edit })
+// 父组件刷新方法
+const emit = defineEmits(['reset'])
 
+/**
+ * 新增或者修改
+ */
 const save = async () => {
   try {
-    const obj = await FormRef.value?.validate()
+    const obj = await formRef.value?.validate()
     if (obj) return false
-    const res = await saveSystemUser(form)
-    if (res.data) {
-      Message.success('模拟保存成功')
+    let res
+    if (form.id) {
+      res = await updateSystemUser(form)
+    } else {
+      res = await saveSystemUser(form)
+    }
+    if (res.success) {
+      Message.success(res.msg)
+      emit('reset')
       return true
     } else {
       return false
@@ -181,4 +201,6 @@ const save = async () => {
     return false
   }
 }
+
+defineExpose({ add, edit })
 </script>

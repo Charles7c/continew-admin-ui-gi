@@ -34,10 +34,8 @@ const storeSetup = () => {
   // 登录
   const login = async (params: any) => {
     const accountLoginRes = await accountLoginApi(params)
-    console.log(accountLoginRes)
-    const loginRes = await loginApi({ username: 'admin', password: 'admin123' })
-    setToken(loginRes.data.token)
-    token.value = loginRes.data.token
+    setToken(accountLoginRes.data.token)
+    token.value = accountLoginRes.data.token
   }
 
   // 退出

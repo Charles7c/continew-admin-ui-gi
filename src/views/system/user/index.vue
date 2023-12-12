@@ -2,7 +2,7 @@
   <div class="gi_page user-manage">
     <a-card title="用户管理">
       <a-row :gutter="16">
-        <a-col :xs="0" :md="6" :lg="6" :xl="6" :xxl="4">
+        <a-col :xs="0" :md="5" :lg="5" :xl="5" :xxl="4">
           <a-input v-model="treeInputValue" placeholder="输入部门名称搜索" allow-clear style="margin-bottom: 10px">
             <template #prefix><icon-search /></template>
           </a-input>
@@ -13,11 +13,12 @@
             default-expand-all
             :data="deptList"
             :field-names="{
+              disabled: 'false',
               key: 'id',
               title: 'name',
               children: 'children'
             }"
-            @select="search"
+            @select="handleSelectNode"
           >
           </a-tree>
         </a-col>
@@ -82,28 +83,28 @@
               <a-table-column title="状态" :width="100" align="center">
                 <template #cell="{ record }">
                   <a-tag v-if="record.status === 1" color="green">正常</a-tag>
-                  <a-tag v-if="record.status === 0" color="red">禁用</a-tag>
+                  <a-tag v-if="record.status === 2" color="red">禁用</a-tag>
                 </template>
               </a-table-column>
               <a-table-column title="性别" data-index="gender" :width="80" align="center">
                 <template #cell="{ record }">
                   <span v-if="record.gender === 1">男</span>
-                  <span v-if="record.gender === 2">女</span>
+                  <span v-else-if="record.gender === 2">女</span>
+                  <span v-else>未知</span>
                 </template>
               </a-table-column>
               <a-table-column title="头像" data-index="avatar" :width="100" align="center">
                 <template #cell="{ record }">
                   <a-avatar>
-                    <img alt="avatar" :src="record.avatar" />
+                    <img alt="avatar" :src="getAvatar(record.avatar, record.gender)" />
                   </a-avatar>
                 </template>
               </a-table-column>
               <a-table-column title="联系方式" data-index="phone" :width="180"></a-table-column>
-              <a-table-column title="部门" data-index="deptName" :width="180"></a-table-column>
               <a-table-column title="类型" :width="100" align="center">
                 <template #cell="{ record }">
-                  <a-tag v-if="record.type === 1" color="red">系统内置</a-tag>
-                  <a-tag v-if="record.type === 2" color="orange">自定义</a-tag>
+                  <a-tag v-if="record.isSystem" color="red">系统内置</a-tag>
+                  <a-tag v-else color="orange">自定义</a-tag>
                 </template>
               </a-table-column>
               <a-table-column title="描述" :width="200" data-index="description"></a-table-column>
@@ -130,7 +131,7 @@
       </a-row>
     </a-card>
 
-    <AddUserModal ref="AddUserModalRef"></AddUserModal>
+    <AddUserModal ref="AddUserModalRef" @reset="reset"></AddUserModal>
     <UserDetailDrawer ref="UserDetailDrawerRef"></UserDetailDrawer>
   </div>
 </template>
@@ -145,6 +146,9 @@ import UserDetailDrawer from './UserDetailDrawer.vue'
 import type { TreeInstance } from '@arco-design/web-vue'
 import { Message } from '@arco-design/web-vue'
 import { isMobile } from '@/utils'
+import getAvatar from '@/utils/avatar'
+
+const { proxy } = getCurrentInstance() as any
 
 defineOptions({ name: 'SystemUser' })
 
@@ -162,7 +166,7 @@ const { deptList, getDeptList } = useDept({
 })
 getDeptList()
 
-const form = reactive({ status: '', username: '' })
+const form = reactive({ status: undefined, username: undefined, deptId: undefined })
 
 const {
   loading,
@@ -173,11 +177,14 @@ const {
   select,
   selectAll,
   handleDelete
-} = useTable((pagin) => getSystemUserList({ current: pagin.page, pageSize: pagin.size }), { immediate: true })
+} = useTable((pagin) => getSystemUserList({ ...form, page: pagin.page, size: pagin.size }), {
+  immediate: true
+})
 
 const reset = () => {
-  form.status = ''
-  form.username = ''
+  form.status = undefined
+  form.username = undefined
+  form.deptId = undefined
   search()
 }
 
@@ -192,6 +199,18 @@ const onMulDelete = () => {
     return Message.warning('请选择用户！')
   }
   handleDelete(() => deleteSystemUser({ ids: selectedKeys.value as string[] }))
+}
+
+// 根据选中部门查询
+const handleSelectNode = (keys: Array<any>) => {
+  if (form.deptId === keys[0]) {
+    form.deptId = undefined
+    // 如已选中，再次点击则取消选中
+    proxy.$refs.TreeRef.selectNode(keys, false)
+  } else {
+    form.deptId = keys.length === 1 ? keys[0] : undefined
+  }
+  search()
 }
 
 const onAdd = () => {

@@ -19,6 +19,6 @@ export const getUserInfo = () => {
 
 /** @desc 获取用户路由信息 */
 export const getUserAsyncRoutes = () => {
-  // return http.get<MenuItem[]>(`api${BASE_URL}/routes`)
+  // return http.get<MenuItem[]>(`api${BASE_URL}/menu`)
   return http.get<MenuItem[]>(`${prefix}/user/routes`)
 }

@@ -45,7 +45,7 @@ const storeSetup = () => {
   const addCacheItem = (item: RouteRecordRaw) => {
     if (item.name) {
       if (cacheList.value.includes(item.name)) return
-      if (item.meta?.keepAlive) {
+      if (item.meta?.isCache) {
         cacheList.value.push(item.name)
       }
     }

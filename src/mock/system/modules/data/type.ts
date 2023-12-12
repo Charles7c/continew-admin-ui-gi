@@ -8,12 +8,12 @@ export interface MockMenuItem {
   title: string
   svgIcon: string
   icon: string
-  keepAlive: boolean
-  hidden: boolean
+  isCache: boolean
+  isHidden: boolean
   sort: number
   activeMenu: string
   breadcrumb: boolean
-  status: 0 | 1
+  status: 1 | 2
   roles: string[]
   permission: string
   showInTabs: boolean

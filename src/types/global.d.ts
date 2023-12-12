@@ -13,8 +13,8 @@ interface NodeOptions extends Options {
 
 type TimeRanger = [string, string]
 
-/** 系统管理通用状态 0禁用 1启用 */
-type Status = 0 | 1
+/** 系统管理通用状态 1：启用；2：禁用 */
+type Status = 1 | 2
 
 /** 性别 1男 2女 */
 type Gender = 1 | 2

@@ -46,8 +46,12 @@ http.interceptors.request.use(
       if (!config.headers) {
         config.headers = {}
       }
-      // config.headers.Authorization = `Bearer ${token}`
-      config.headers.token = token
+      // mock token
+      if (config.url?.indexOf('/mock') != -1) {
+        config.headers.token = 'TOKEN-admin'
+      } else {
+        config.headers.Authorization = `Bearer ${token}`
+      }
     }
     return config
   },
@@ -65,7 +69,6 @@ http.interceptors.response.use(
     // token失效
     if (code === 401) {
       NProgress.done()
-      // Message.error('token失效')
       router.replace('/login')
       return Promise.reject(new Error('token失效'))
     }
@@ -120,4 +123,22 @@ const post = <T = any>(url: string, params?: object, config?: AxiosRequestConfig
   })
 }
 
-export default { get, post }
+const put = <T = any>(url: string, params?: object, config?: AxiosRequestConfig): Promise<ApiRes<T>> => {
+  return request({
+    method: 'put',
+    url,
+    data: params,
+    ...config
+  })
+}
+
+const del = <T = any>(url: string, params?: object, config?: AxiosRequestConfig): Promise<ApiRes<T>> => {
+  return request({
+    method: 'delete',
+    url,
+    data: params,
+    ...config
+  })
+}
+
+export default { get, post, del, put }

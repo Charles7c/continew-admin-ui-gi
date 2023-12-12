@@ -22,7 +22,7 @@ export default function <T>(api: Api<T>, options?: Options<T>) {
     try {
       loading.value = true
       const res = await api({ page: pagination.current, size: pagination.pageSize })
-      tableData.value = formatResult ? formatResult(res.data.records) : res.data.records
+      tableData.value = formatResult ? formatResult(res.data.list) : res.data.list
       setTotal(res.data.total)
       onSuccess && onSuccess()
     } finally {

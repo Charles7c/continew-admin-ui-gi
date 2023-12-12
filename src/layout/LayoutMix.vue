@@ -61,7 +61,7 @@ const router = useRouter()
 const appStore = useAppStore()
 const routeStore = useRouteStore()
 // 过滤是菜单的路由
-const menuRoutes = filterTree(routeStore.routes, (i) => i.meta?.hidden === false)
+const menuRoutes = filterTree(routeStore.routes, (i) => i.meta?.isHidden === false)
 
 // 顶部一级菜单
 const topMenus = ref<RouteRecordRaw[]>([])

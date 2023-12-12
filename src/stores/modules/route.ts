@@ -53,16 +53,16 @@ const formatAsyncRoutes = (menus: MenuItem[]) => {
       component: transformComponentView(item.component),
       redirect: item.redirect,
       meta: {
-        hidden: item.hidden,
-        keepAlive: item.keepAlive,
+        isHidden: item.isHidden,
+        isCache: item.isCache,
         title: item.title,
         svgIcon: item.svgIcon,
         icon: item.icon,
         affix: item.affix,
-        breadcrumb: item.breadcrumb,
-        showInTabs: item.showInTabs,
-        activeMenu: item.activeMenu,
-        alwaysShow: item.alwaysShow
+        breadcrumb: true,
+        showInTabs: true,
+        activeMenu: '',
+        alwaysShow: false
       }
     }
   })

@@ -8,7 +8,7 @@ export const constantRoutes: RouteRecordRaw[] = [
   {
     path: '/redirect',
     component: Layout,
-    meta: { hidden: true },
+    meta: { isHidden: true },
     children: [
       {
         path: '/redirect/:path(.*)',
@@ -19,30 +19,30 @@ export const constantRoutes: RouteRecordRaw[] = [
   {
     path: '/login',
     component: () => import('@/views/login/index.vue'),
-    meta: { hidden: true }
+    meta: { isHidden: true }
   },
   {
     path: '/:pathMatch(.*)*',
     component: () => import('@/views/error/404.vue'),
-    meta: { hidden: true }
+    meta: { isHidden: true }
   },
   {
     path: '/403',
     component: () => import('@/views/error/403.vue'),
-    meta: { hidden: true }
+    meta: { isHidden: true }
   },
   {
     path: '/',
     name: 'Home',
     component: Layout,
     redirect: '/home',
-    meta: { hidden: false },
+    meta: { isHidden: false },
     children: [
       {
         path: '/home',
         component: () => import('@/views/home/index.vue'),
         name: 'Home',
-        meta: { title: '首页', icon: 'icon-dashboard', svgIcon: 'menu-home', affix: true, hidden: false }
+        meta: { title: '首页', icon: 'icon-dashboard', svgIcon: 'menu-home', affix: true, isHidden: false }
       }
     ]
   }

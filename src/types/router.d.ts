@@ -9,7 +9,7 @@ declare module 'vue-router' {
     /** 设置该路由的图标, 直接使用Arco Design的Icon(与svgIcon同时设置时, svgIcon将优先生效)*/
     icon?: string
     /**  默认false, 设置true的时候该路由不会在侧边栏出现 */
-    hidden?: boolean
+    isHidden?: boolean
     /** 默认true, 如果设置为false, 则不会在面包屑中显示 */
     breadcrumb?: false
     /** 默认true, 如果设置为false, 它则不会显示在Tab栏中 */
@@ -26,14 +26,14 @@ declare module 'vue-router' {
     /**
      * 示例: activeMenu: "/xxx/xxx"
      * 当设置了该属性进入路由时, 则会高亮activeMenu属性对应的侧边栏
-     * 该属性适合使用在有hidden: true属性的路由上
+     * 该属性适合使用在有isHidden: true属性的路由上
      */
     activeMenu?: string
     /**
      * 是否缓存该路由页面
      * 默认为false, 为true时代表需要缓存, 此时该路由和该页面都需要设置一致的name
      */
-    keepAlive?: boolean
+    isCache?: boolean
     /** 默认路由参数 */
     query?: string
     noShowingChildren?: boolean

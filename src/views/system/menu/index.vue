@@ -97,13 +97,13 @@
           </a-table-column>
           <a-table-column title="是否缓存" :width="100" align="center">
             <template #cell="{ record }">
-              <a-tag v-if="record.keepAlive" color="green">是</a-tag>
+              <a-tag v-if="record.isCache" color="green">是</a-tag>
               <a-tag v-else color="red">否</a-tag>
             </template>
           </a-table-column>
           <a-table-column title="是否隐藏" :width="100" align="center">
             <template #cell="{ record }">
-              <a-tag v-if="record.hidden" color="green">是</a-tag>
+              <a-tag v-if="record.isHidden" color="green">是</a-tag>
               <a-tag v-else color="red">否</a-tag>
             </template>
           </a-table-column>

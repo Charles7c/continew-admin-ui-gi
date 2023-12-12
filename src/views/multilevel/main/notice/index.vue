@@ -6,9 +6,9 @@
       </template>
       <span>
         <span>这里是三级路由页面--当前页面的</span>
-        <a-typography-text type="primary"> keepAlive </a-typography-text>
+        <a-typography-text type="primary"> isCache </a-typography-text>
         <span>为 </span>
-        <a-typography-text type="primary">{{ String(route.meta.keepAlive) }}</a-typography-text>
+        <a-typography-text type="primary">{{ String(route.meta.isCache) }}</a-typography-text>
       </span>
     </a-alert>
     <a-input

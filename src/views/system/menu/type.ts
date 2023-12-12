@@ -7,8 +7,8 @@ export interface MenuForm {
   status: 1 | 0
   path: string
   component: string
-  keepAlive: boolean
-  hidden: boolean
+  isCache: boolean
+  isHidden: boolean
   parentId: string
   redirect: string
   breadcrumb: boolean
