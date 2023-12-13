@@ -1,15 +1,15 @@
 <template>
   <a-menu
-    :mode="mode"
-    :selected-keys="activeMenu"
-    :auto-open-selected="autoOpenSelected"
-    :accordion="appStore.menuAccordion"
-    :breakpoint="appStore.layout === 'mix' ? 'xl' : undefined"
-    :trigger-props="{ animationName: 'slide-dynamic-origin' }"
-    :collapsed="notCollapsed ? false : appStore.menuCollapse"
-    @menu-item-click="onMenuItemClick"
-    @collapse="onCollapse"
-    :style="menuStyle"
+      :mode="mode"
+      :selected-keys="activeMenu"
+      :auto-open-selected="autoOpenSelected"
+      :accordion="appStore.menuAccordion"
+      :breakpoint="appStore.layout === 'mix' ? 'xl' : undefined"
+      :trigger-props="{ animationName: 'slide-dynamic-origin' }"
+      :collapsed="!isDesktop ? false : appStore.menuCollapse"
+      @menu-item-click="onMenuItemClick"
+      @collapse="onCollapse"
+      :style="menuStyle"
   >
     <MenuItem v-for="(route, index) in sidebarRoutes" :key="route.path + index" :item="route"></MenuItem>
   </a-menu>
@@ -21,19 +21,21 @@ import MenuItem from './MenuItem.vue'
 import { isExternal } from '@/utils/validate'
 import type { RouteRecordRaw } from 'vue-router'
 import type { CSSProperties } from 'vue'
+import { useDevice } from '@/hooks'
 
 defineOptions({ name: 'Menu' })
+const emit = defineEmits<{
+  (e: 'menuItemClickAfter'): void
+}>()
 
 interface Props {
   menus?: RouteRecordRaw[]
   menuStyle?: CSSProperties
-  notCollapsed?: boolean // 强制菜单不折叠
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  notCollapsed: false
-})
+const props = withDefaults(defineProps<Props>(), {})
 
+const { isDesktop } = useDevice()
 const route = useRoute()
 const router = useRouter()
 const appStore = useAppStore()
@@ -74,10 +76,8 @@ const onMenuItemClick = (key: string) => {
     window.open(key)
     return
   }
-  if (props.notCollapsed) {
-    appStore.menuCollapse = false
-  }
   router.push({ path: key })
+  emit('menuItemClickAfter')
 }
 
 // 折叠状态改变时触发

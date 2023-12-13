@@ -1,24 +1,13 @@
 <template>
-  <div class="layout-item" :class="[`layout-item-${mode}`, { actived: actived }]" @click="emit('click')">
-    <div class="item"></div>
-    <div class="item">
-      <template v-if="mode === 'mix'">
-        <div class="left"></div>
-        <div class="right"></div>
-      </template>
-    </div>
-  </div>
+  <div class="layout-item" :class="`layout-item-${mode}`" @click="emit('click')"></div>
 </template>
 
 <script setup lang="ts">
 interface Props {
   mode: 'left' | 'top' | 'mix'
-  actived?: boolean
 }
 
-withDefaults(defineProps<Props>(), {
-  actived: false
-})
+withDefaults(defineProps<Props>(), {})
 
 const emit = defineEmits(['click'])
 </script>
@@ -28,46 +17,45 @@ const emit = defineEmits(['click'])
   width: 60px;
   height: 50px;
   background-color: var(--color-fill-3);
-  border-radius: 4px;
+  border-radius: 3px;
   overflow: hidden;
-  display: flex;
   cursor: pointer;
   box-sizing: border-box;
-  &.actived {
-    border: 2px solid rgb(var(--primary-5));
+  position: relative;
+  &::before {
+    content: '';
+    width: 12px;
+    height: 100%;
+    background-color: rgb(var(--gray-9));
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+  }
+  &::after {
+    content: '';
+    width: 100%;
+    height: 10px;
+    background-color: rgb(var(--gray-9));
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
   }
   &-left {
-    .item {
-      &:first-child {
-        width: 12px;
-        background-color: #333;
-      }
+    &::before {
+      display: block;
     }
   }
   &-top {
-    flex-direction: column;
-    .item {
-      &:first-child {
-        height: 10px;
-        background-color: #333;
-      }
+    &::after {
+      display: block;
     }
   }
   &-mix {
-    flex-direction: column;
-    .item {
-      &:first-child {
-        height: 10px;
-        background-color: #333;
-      }
-      &:last-child {
-        flex: 1;
-        display: flex;
-      }
-      .left {
-        width: 12px;
-        background-color: #333;
-      }
+    &::before,
+    &::after {
+      display: block;
     }
   }
 }

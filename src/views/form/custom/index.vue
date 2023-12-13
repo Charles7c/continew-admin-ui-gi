@@ -1,6 +1,6 @@
 <template>
   <div class="gi_page">
-    <a-space direction="vertical" size="medium">
+    <a-space direction="vertical" size="medium" fill>
       <Card1></Card1>
       <Card2></Card2>
       <Card4></Card4>

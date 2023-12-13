@@ -1,39 +1,24 @@
 <template>
   <div
+    v-if="isDesktop"
     class="asider"
-    :class="{ 'asider-h5': isMobile(), 'app-menu-dark': appStore.menuDark }"
+    :class="{ 'app-menu-dark': appStore.menuDark }"
     :style="appStore.menuDark ? appStore.themeCSSVar : undefined"
   >
-    <template v-if="isMobile()">
-      <a-drawer
-        v-model:visible="appStore.menuCollapse"
-        placement="left"
-        :header="false"
-        :footer="false"
-        :render-to-body="false"
-        :drawer-style="{ 'border-right': '1px solid var(--color-border-2)', 'box-sizing': 'border-box' }"
-      >
-        <Logo :collapsed="false"></Logo>
-        <Menu :not-collapsed="true" class="menu w-full"></Menu>
-      </a-drawer>
-    </template>
-
-    <template v-else>
-      <Logo :collapsed="appStore.menuCollapse"></Logo>
-      <a-layout-sider
-        class="menu"
-        collapsible
-        breakpoint="xl"
-        hide-trigger
-        :width="220"
-        :collapsed="appStore.menuCollapse"
-        @collapse="handleCollapse"
-      >
-        <a-scrollbar outer-class="h-full" style="height: 100%; overflow: auto">
-          <Menu></Menu>
-        </a-scrollbar>
-      </a-layout-sider>
-    </template>
+    <Logo :collapsed="appStore.menuCollapse"></Logo>
+    <a-layout-sider
+      class="menu"
+      collapsible
+      breakpoint="xl"
+      hide-trigger
+      :width="220"
+      :collapsed="appStore.menuCollapse"
+      @collapse="handleCollapse"
+    >
+      <a-scrollbar outer-class="h-full" style="height: 100%; overflow: auto">
+        <Menu></Menu>
+      </a-scrollbar>
+    </a-layout-sider>
   </div>
 </template>
 
@@ -41,19 +26,14 @@
 import { useAppStore } from '@/stores'
 import Menu from '../Menu/index.vue'
 import Logo from '../Logo.vue'
-import { isMobile } from '@/utils'
+import { useDevice } from '@/hooks'
 
 defineOptions({ name: 'Asider' })
 const appStore = useAppStore()
-
-if (isMobile()) {
-  appStore.menuCollapse = false
-}
+const { isDesktop } = useDevice()
 
 const handleCollapse = (isCollapsed: boolean) => {
-  if (!isMobile()) {
-    appStore.menuCollapse = isCollapsed
-  }
+  appStore.menuCollapse = isCollapsed
 }
 </script>
 
@@ -73,17 +53,6 @@ const handleCollapse = (isCollapsed: boolean) => {
   }
 }
 
-:deep(.arco-menu-vertical .arco-menu-inline-header .arco-menu-icon-suffix) {
-  transition: all 0.3s;
-}
-
-:deep(.arco-drawer-body) {
-  padding: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
 :deep(.arco-layout-sider-children) {
   overflow: hidden;
 }
@@ -101,11 +70,5 @@ const handleCollapse = (isCollapsed: boolean) => {
     overflow: hidden;
     background-color: inherit;
   }
-}
-
-.asider-h5 {
-  border-right: none;
-  color: inherit;
-  background-color: inherit;
 }
 </style>

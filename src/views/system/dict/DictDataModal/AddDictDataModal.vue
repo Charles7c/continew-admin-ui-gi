@@ -34,6 +34,7 @@
 <script setup lang="ts">
 import { getSystemDictDataDetail, saveSystemDictData } from '@/apis'
 import { Message, type FormInstance } from '@arco-design/web-vue'
+import { useForm } from '@/hooks'
 
 const formRef = ref<FormInstance>()
 const dictDataId = ref('')
@@ -42,7 +43,7 @@ const title = computed(() => (isEdit.value ? '编辑字典数据' : '新增字�
 const visible = ref(false)
 const loading = ref(false)
 
-const form = reactive({
+const { form, resetForm } = useForm({
   name: '',
   value: '',
   status: 1
@@ -58,6 +59,7 @@ const rules: FormInstance['rules'] = {
 }
 
 const add = () => {
+  resetForm()
   dictDataId.value = ''
   visible.value = true
 }

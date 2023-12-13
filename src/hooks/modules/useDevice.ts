@@ -1,4 +1,4 @@
-import { ref, watch, computed } from 'vue'
+import { computed } from 'vue'
 import { useWindowSize } from '@vueuse/core'
 
 /**
@@ -9,19 +9,9 @@ import { useWindowSize } from '@vueuse/core'
  * 小屏（>=768px）
  */
 export default function () {
-  const device = ref<'mobile' | 'desktop'>('desktop')
-
   const { width } = useWindowSize()
-  watch(
-    () => width,
-    () => {
-      device.value = width.value < 768 ? 'mobile' : 'desktop'
-    },
-    { immediate: true }
-  )
+  const isDesktop = computed(() => width.value > 768)
+  const isMobile = computed(() => !isDesktop.value)
 
-  const isMobile = computed(() => device.value === 'mobile')
-  const isDesktop = computed(() => device.value === 'desktop')
-
-  return { device, isMobile, isDesktop }
+  return { isMobile, isDesktop }
 }

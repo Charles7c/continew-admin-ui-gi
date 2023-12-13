@@ -173,12 +173,13 @@
 </template>
 
 <script setup lang="ts">
-import { Message, type FormInstance } from '@arco-design/web-vue'
-import { getSystemMenuDetail, saveSystemMenu, type MenuItem } from '@/apis'
+import { type FormInstance, Message } from '@arco-design/web-vue'
+import { getSystemMenuDetail, type MenuItem, saveSystemMenu } from '@/apis'
 import { isExternal } from '@/utils/validate'
-import { transformPathToName, filterTree } from '@/utils'
+import { filterTree, transformPathToName } from '@/utils'
 import { mapTree } from 'xe-utils'
 import type { MenuForm } from './type'
+import { useForm } from '@/hooks'
 
 interface Props {
   menus: MenuItem[]
@@ -191,12 +192,11 @@ const props = withDefaults(defineProps<Props>(), {
 const menuSelectTree = computed(() => {
   const menus = JSON.parse(JSON.stringify(props.menus)) as MenuItem[]
   const data = filterTree(menus, (i) => [1, 2].includes(i.type))
-  const arr = mapTree(data, (i) => ({
+  return mapTree(data, (i) => ({
     id: i.id,
     title: i.title,
     children: i.children
   }))
-  return arr
 })
 
 const FormRef = ref<FormInstance>()
@@ -207,7 +207,7 @@ const isEdit = computed(() => !!menuId.value)
 const title = computed(() => (isEdit.value ? '编辑菜单' : '新增菜单'))
 
 const isExternalUrl = ref(false)
-const form: MenuForm = reactive({
+const { form, resetForm } = useForm<MenuForm>({
   type: 1, // 类型 1目录 2菜单 3按钮
   icon: '', // arco 图标名称
   svgIcon: '', // 自定义图标名称
@@ -251,6 +251,7 @@ const onChangeType = () => {
 }
 
 const add = () => {
+  resetForm()
   menuId.value = ''
   visible.value = true
 }

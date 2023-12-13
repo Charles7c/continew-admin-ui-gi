@@ -148,8 +148,8 @@ getDeptList()
  * 打开新增弹窗
  */
 const add = () => {
-  visible.value = true
   resetForm()
+  visible.value = true
 }
 
 /**

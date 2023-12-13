@@ -7,6 +7,9 @@ export default function <F extends object>(initValue: F) {
   const form = reactive(getInitValue())
 
   const resetForm = () => {
+    for (const key in form) {
+      delete form[key]
+    }
     Object.assign(form, getInitValue())
   }
 

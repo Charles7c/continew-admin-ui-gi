@@ -73,7 +73,7 @@ const { form, resetForm } = useForm({
   sort: 999
 } as DeptItem)
 
-const rules = {
+const rules: FormInstance['rules'] = {
   parentId: [{ required: true, message: '请选择上级部门' }],
   name: [
     { required: true, message: '请输入部门名称' },
@@ -89,11 +89,11 @@ const rules = {
  * @param item 部门数据
  */
 const add = async (item: DeptItem | undefined) => {
+  resetForm()
   await getDeptList()
   deptId.value = 0
   visible.value = true
   form.parentId = item?.id
-  resetForm()
 }
 
 /**
