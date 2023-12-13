@@ -31,13 +31,7 @@
               </a-input-password>
             </a-form-item>
             <a-form-item field="captcha" hide-label>
-              <a-input
-                v-model="form.captcha"
-                placeholder="请输入验证码"
-                :max-length="4"
-                allow-clear
-                style="flex: 1 1"
-              >
+              <a-input v-model="form.captcha" placeholder="请输入验证码" :max-length="4" allow-clear style="flex: 1 1">
                 <template #prefix><icon-check-circle :stroke-width="1" :style="{ fontSize: '16px' }" /></template>
               </a-input>
               <img :src="captchaImgBase64" alt="验证码" class="captcha" @click="getCaptcha" />

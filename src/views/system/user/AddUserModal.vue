@@ -8,7 +8,7 @@
     @before-ok="save"
     @close="close"
   >
-    <a-form ref="formRef" :model="form" :rules="rules" size="medium" auto-label-width>
+    <a-form ref="FormRef" :model="form" :rules="rules" size="medium" auto-label-width>
       <a-row>
         <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" :xxl="12">
           <a-form-item label="用户名" field="username">
@@ -112,7 +112,7 @@ const { getRoleDict, roleDict } = useRole()
 getRoleDict()
 const roleOptions = computed(() => roleDict.value.map((i) => ({ label: i.label, value: i.value })))
 
-const formRef = ref<FormInstance>()
+const FormRef = ref<FormInstance>()
 const userId = ref(0)
 const isEdit = computed(() => !!userId.value)
 const title = computed(() => (isEdit.value ? '编辑用户' : '新增用户'))
@@ -154,7 +154,7 @@ const add = () => {
 
 /**
  * 打开编辑弹窗
- * @param id
+ * @param id 用户ID
  */
 const edit = async (id: number) => {
   visible.value = true
@@ -170,7 +170,7 @@ const edit = async (id: number) => {
  * 关闭弹窗
  */
 const close = () => {
-  formRef.value?.resetFields()
+  FormRef.value?.resetFields()
 }
 
 // 父组件刷新方法
@@ -181,7 +181,7 @@ const emit = defineEmits(['reset'])
  */
 const save = async () => {
   try {
-    const obj = await formRef.value?.validate()
+    const obj = await FormRef.value?.validate()
     if (obj) return false
     let res
     if (form.id) {

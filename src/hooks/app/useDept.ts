@@ -8,12 +8,12 @@ export function useDept(options?: { onSuccess?: () => void }) {
   const loading = ref(false)
   const deptList = ref<DeptItem[]>([])
 
-  const getDeptList = async () => {
+  const getDeptList = async (filterDisable?: boolean) => {
     try {
       loading.value = true
       const res = await getSystemDeptList()
       deptList.value = mapTree(res.data, (i) => {
-        if (i.children?.length) {
+        if (i.children?.length && filterDisable) {
           i.children = i.children.filter((i) => i.status === 1)
         }
         return i

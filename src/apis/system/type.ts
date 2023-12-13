@@ -1,15 +1,3 @@
-/** 系统部门类型 */
-export interface DeptItem {
-  id: string
-  name: string
-  sort: number
-  status: 0 | 1
-  createTime: string
-  parentId: string
-  children?: DeptItem[]
-  description: string
-}
-
 /** 系统菜单类型 */
 export interface MenuItem {
   activeMenu: string

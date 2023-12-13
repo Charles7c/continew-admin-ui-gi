@@ -148,8 +148,6 @@ import { Message } from '@arco-design/web-vue'
 import { isMobile } from '@/utils'
 import getAvatar from '@/utils/avatar'
 
-const { proxy } = getCurrentInstance() as any
-
 defineOptions({ name: 'SystemUser' })
 
 const TreeRef = ref<TreeInstance>()
@@ -157,16 +155,12 @@ const AddUserModalRef = ref<InstanceType<typeof AddUserModal>>()
 const UserDetailDrawerRef = ref<InstanceType<typeof UserDetailDrawer>>()
 const treeInputValue = ref('')
 
-const { deptList, getDeptList } = useDept({
-  onSuccess: () => {
-    nextTick(() => {
-      TreeRef.value?.expandAll(true)
-    })
-  }
+const form = reactive({
+  status: undefined,
+  username: undefined,
+  deptId: undefined,
+  sort: ['createTime,desc']
 })
-getDeptList()
-
-const form = reactive({ status: undefined, username: undefined, deptId: undefined })
 
 const {
   loading,
@@ -178,10 +172,21 @@ const {
   selectAll,
   handleDelete
 } = useTable((paging) => getSystemUserList({ ...form, page: paging.page, size: paging.size }), {
-  immediate: true,
-  isFilterDisabled: true
+  immediate: true
 })
 
+const { deptList, getDeptList } = useDept({
+  onSuccess: () => {
+    nextTick(() => {
+      TreeRef.value?.expandAll(true)
+    })
+  }
+})
+getDeptList()
+
+/**
+ * 重置
+ */
 const reset = () => {
   form.status = undefined
   form.username = undefined
@@ -189,41 +194,60 @@ const reset = () => {
   search()
 }
 
-// 删除
-const onDelete = (item: UserItem) => {
-  return handleDelete(() => deleteSystemUser({ ids: [item.id] }), { showModal: false })
-}
-
-// 批量删除
-const onMulDelete = () => {
-  if (!selectedKeys.value.length) {
-    return Message.warning('请选择用户！')
-  }
-  handleDelete(() => deleteSystemUser({ ids: selectedKeys.value as number[] }))
-}
-
-// 根据选中部门查询
+/**
+ * 根据选中部门查询
+ *
+ * @param keys 选中节点 key
+ */
 const handleSelectNode = (keys: Array<any>) => {
   if (form.deptId === keys[0]) {
     form.deptId = undefined
     // 如已选中，再次点击则取消选中
-    proxy.$refs.TreeRef.selectNode(keys, false)
+    TreeRef.value?.selectNode(keys, false)
   } else {
     form.deptId = keys.length === 1 ? keys[0] : undefined
   }
   search()
 }
+/**
+ * 详情
+ * @param item 用户信息
+ */
+const openDetail = (item: UserItem) => {
+  UserDetailDrawerRef.value?.open(item.id)
+}
 
+/**
+ * 新增
+ */
 const onAdd = () => {
   AddUserModalRef.value?.add()
 }
 
+/**
+ * 修改
+ * @param item
+ */
 const onEdit = (item: UserItem) => {
   AddUserModalRef.value?.edit(item.id)
 }
 
-const openDetail = (item: UserItem) => {
-  UserDetailDrawerRef.value?.open(item.id)
+/**
+ * 删除
+ * @param item 用户列表
+ */
+const onDelete = (item: UserItem) => {
+  return handleDelete(() => deleteSystemUser({ ids: [item.id] }), { showModal: false })
+}
+
+/**
+ * 批量删除
+ */
+const onMulDelete = () => {
+  if (!selectedKeys.value.length) {
+    return Message.warning('请选择用户！')
+  }
+  handleDelete(() => deleteSystemUser({ ids: selectedKeys.value as number[] }))
 }
 </script>
 

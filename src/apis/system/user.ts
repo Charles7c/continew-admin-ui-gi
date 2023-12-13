@@ -36,24 +36,24 @@ export interface UserListParam {
 
 /** @desc 获取用户数据 */
 export function getSystemUserList(params: UserListParam) {
-  return http.get<PageRes<UserItem[]>>(`api${BASE_URL}`, params)
+  return http.get<PageRes<UserItem[]>>(`/api${BASE_URL}`, params)
 }
 
 /** @desc 获取用户详情 */
 export function getSystemUserDetail(params: { id: number }) {
-  return http.get<UserItem>(`api${BASE_URL}/${params.id}`, params)
+  return http.get<UserItem>(`/api${BASE_URL}/${params.id}`, params)
 }
 
 /** @desc 保存用户 */
 export function saveSystemUser(data: UserItem) {
-  return http.post<number>(`api${BASE_URL}`, data)
+  return http.post<number>(`/api${BASE_URL}`, data)
 }
 /** @desc 修改用户 */
-export function updateSystemUser(data: any) {
-  return http.put<number>(`api${BASE_URL}/${data.id}`, data)
+export function updateSystemUser(data: UserItem) {
+  return http.put<number>(`/api${BASE_URL}/${data.id}`, data)
 }
 
 /** @desc 删除用户 */
 export function deleteSystemUser(data: { ids: number[] }) {
-  return http.del(`api${BASE_URL}/${data.ids}`)
+  return http.del(`/api${BASE_URL}/${data.ids}`)
 }

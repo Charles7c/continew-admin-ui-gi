@@ -7,15 +7,13 @@ interface Options<T> {
   onSuccess?: () => void
   immediate?: boolean
   rowKey?: keyof T
-  disabledKey?: keyof T
-  isFilterDisabled?: boolean
 }
 
 type PaginationParams = { page: number; size: number }
 type Api<T> = (params: PaginationParams) => Promise<ApiRes<PageRes<T[]>>>
 
 export default function <T>(api: Api<T>, options?: Options<T>) {
-  const { formatResult, onSuccess, immediate, rowKey, disabledKey } = options || {}
+  const { formatResult, onSuccess, immediate, rowKey } = options || {}
   const { pagination, setTotal } = usePagination(() => getTableData())
   const loading = ref(false)
   const tableData = ref<T[]>([])
@@ -24,7 +22,9 @@ export default function <T>(api: Api<T>, options?: Options<T>) {
     try {
       loading.value = true
       const res = await api({ page: pagination.current, size: pagination.pageSize })
-      tableData.value = formatResult ? formatResult(res.data.list) : res.data.list
+      tableData.value = formatResult
+        ? formatResult(res.data.list ?? res.data.records)
+        : res.data.list ?? res.data.records
       setTotal(res.data.total)
       onSuccess && onSuccess()
     } finally {
@@ -51,19 +51,13 @@ export default function <T>(api: Api<T>, options?: Options<T>) {
   // 全选
   const selectAll: TableInstance['onSelectAll'] = (checked) => {
     const key = rowKey ?? ('id' as keyof T)
-    const getKeys = (data: any[]) => data.map((item) => item[key] as string | number)
-    if (checked) {
-      if (options?.isFilterDisabled) {
-        const disabled = disabledKey ?? ('disabled' as keyof T)
-        const filterDisabled = (data: any[]) => data.filter((item) => !item[disabled] ?? (true as boolean))
-        selectedKeys.value = getKeys(filterDisabled(tableData.value))
-      } else {
-        selectedKeys.value = getKeys(tableData.value)
-      }
-    } else {
-      selectedKeys.value = []
-    }
+    const disabled = 'disabled' as keyof T
+    const mapRowKey = (data: any[]) => data.map((item) => item[key] as string | number)
+    const filterDisabled = (data: any[]) => data.filter((item) => !(item[disabled] ?? false))
+
+    selectedKeys.value = checked ? mapRowKey(filterDisabled(tableData.value)) : []
   }
+
   // 选择的数据发生改变
   const selectionChange: TableInstance['onSelectionChange'] = (rowKeys) => {
     selectedKeys.value = rowKeys
@@ -78,7 +72,7 @@ export default function <T>(api: Api<T>, options?: Options<T>) {
       try {
         const res = await deleteApi()
         if (res.success) {
-          Message.success(options?.successTip || '删除成功！')
+          Message.success(options?.successTip || res.msg)
           selectedKeys.value = []
           getTableData()
         }

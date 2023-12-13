@@ -3,7 +3,6 @@ import { ref, reactive, computed } from 'vue'
 import { resetRouter } from '@/router'
 import {
   accountLogin as accountLoginApi,
-  login as loginApi,
   logout as logoutApi,
   getUserInfo as getUserInfoApi,
   getImageCaptcha as getImageCaptchaApi
